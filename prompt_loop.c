@@ -17,7 +17,7 @@ int prompt_loop(inf_table *list, char **av)
 		if (interactive_ses(list))
 			strprint("$ ");
 		stderrprint(FREE_BUFF);
-		x = get_input(list);
+		x = inputcmd_chain(list);
 		if (x != -1)
 		{
 			struct_init_md(list, av);

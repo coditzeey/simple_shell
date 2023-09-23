@@ -1,43 +1,42 @@
 #include "shell.h"
 
 /**
- * input_buf - buffers chained commands
- * @info: parameter struct
+ * chain_buffers - buffers chained commands
+ * @list: parameter struct
  * @buf: address of buffer
  * @len: address of len var
  *
  * Return: bytes read
  */
-ssize_t input_buf(inf_table *info, char **buf, size_t *len)
+ssize_t chain_buffers(inf_table *list, char **buf, size_t *len)
 {
 	ssize_t r = 0;
 	size_t len_p = 0;
 
 	if (!*len) /* if nothing left in the buffer, fill it */
 	{
-		/*mem_free((void **)info->cmd_buf);*/
+		/*mem_free((void **)list->cmd_buf);*/
 		free(*buf);
 		*buf = NULL;
 		signal(SIGINT, sigintHandler);
 #if GETLINE_MAC
 		r = getline(buf, &len_p, stdin);
 #else
-		r = _getline(info, buf, &len_p);
+		r = nline_input(list, buf, &len_p);
 #endif
 		if (r > 0)
 		{
 			if ((*buf)[r - 1] == '\n')
 			{
-				(*buf)[r - 1] = '\0'; /* remove trailing newline */
+				(*buf)[r - 1] = '\0';
 				r--;
 			}
-			info->lnc_fvar = 1;
+			list->lnc_fvar = 1;
 			coms_rem(*buf);
-			build_history_list(info, *buf, info->hist_ln_count++);
-			/* if (strchkr(*buf, ';')) is this a command chain? */
+			build_history_list(list, *buf, list->hist_ln_count++);
 			{
 				*len = r;
-				info->cmd_buf = buf;
+				list->cmd_buf = buf;
 			}
 		}
 	}
@@ -45,79 +44,79 @@ ssize_t input_buf(inf_table *info, char **buf, size_t *len)
 }
 
 /**
- * get_input - gets a line minus the newline
- * @info: parameter struct
+ * inputcmd_chain - gets a line minus the newline
+ * @list: parameter struct
  *
  * Return: bytes read
  */
-ssize_t get_input(inf_table *info)
+ssize_t inputcmd_chain(inf_table *list)
 {
-	static char *buf; /* the ';' command chain buffer */
+	static char *buf;
 	static size_t i, j, len;
 	ssize_t r = 0;
-	char **buf_p = &(info->arg), *p;
+	char **buf_p = &(list->arg), *p;
 
 	charprint(FREE_BUFF);
-	r = input_buf(info, &buf, &len);
-	if (r == -1) /* EOF */
+	r = chain_buffers(list, &buf, &len);
+	if (r == -1)
 		return (-1);
-	if (len)	/* we have commands left in the chain buffer */
+	if (len)
 	{
-		j = i; /* init new iterator to current buf position */
-		p = buf + i; /* get pointer for return */
+		j = i;
+		p = buf + i;
 
-		verify_seq(info, buf, &j, i, len);
-		while (j < len) /* iterate to semicolon or end */
+		verify_seq(list, buf, &j, i, len);
+		while (j < len)
 		{
-			if (is_seq(info, buf, &j))
+			if (is_seq(list, buf, &j))
 				break;
 			j++;
 		}
 
-		i = j + 1; /* increment past nulled ';'' */
-		if (i >= len) /* reached end of buffer? */
+		i = j + 1;
+		if (i >= len)
 		{
-			i = len = 0; /* reset position and length */
-			info->cmd_buf_type = CLI_NORMAL;
+			i = len = 0;
+			list->cmd_buf_type = CLI_NORMAL;
 		}
 
-		*buf_p = p; /* pass back pointer to current command position */
-		return (_strlen(p)); /* return length of current command */
+		*buf_p = p;
+		return (_strlen(p));
 	}
 
-	*buf_p = buf; /* else not a chain, pass back buffer from _getline() */
-	return (r); /* return length of buffer from _getline() */
+	*buf_p = buf;
+	return (r);
 }
 
 /**
  * read_buf - reads a buffer
- * @info: parameter struct
+ * @list: parameter struct
  * @buf: buffer
  * @i: size
  *
  * Return: r
  */
-ssize_t read_buf(inf_table *info, char *buf, size_t *i)
+ssize_t read_buf(inf_table *list, char *buf, size_t *i)
 {
 	ssize_t r = 0;
 
 	if (*i)
 		return (0);
-	r = read(info->rdfldesc, buf, READ_BUFFER_SIZE);
+	r = read(list->rdfldesc, buf, READ_BUFFER_SIZE);
 	if (r >= 0)
 		*i = r;
 	return (r);
 }
 
 /**
- * _getline - gets the next line of input from STDIN
- * @info: parameter struct
- * @ptr: address of pointer to buffer, preallocated or NULL
+ * nline_input - receives next line of input from STDIN
+ * @list: parameter
+ * @ptr: address of pointer to buffer
  * @length: size of preallocated ptr buffer if not NULL
  *
  * Return: s
  */
-int _getline(inf_table *info, char **ptr, size_t *length)
+int nline_input(inf_table *list, char **ptr, size_t *length)
 {
 	static char buf[READ_BUFFER_SIZE];
 	static size_t i, len;
@@ -131,7 +130,7 @@ int _getline(inf_table *info, char **ptr, size_t *length)
 	if (i == len)
 		i = len = 0;
 
-	r = read_buf(info, buf, &len);
+	r = read_buf(list, buf, &len);
 	if (r == -1 || (r == 0 && len == 0))
 		return (-1);
 
@@ -157,7 +156,7 @@ int _getline(inf_table *info, char **ptr, size_t *length)
 }
 
 /**
- * sigintHandler - blocks ctrl-C
+ * sigintHandler - key ctrl-C
  * @sig_num: the signal number
  *
  * Return: void
