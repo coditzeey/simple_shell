@@ -39,7 +39,7 @@ int main(int agc, char **agv)
 		list->rdfldesc = nkowa;
 	}
 	add_to_envlist(list);
-	read_history(list);
+	get_history_func(list);
 	prompt_loop(list, agv);
 	return (EXIT_SUCCESS);
 }

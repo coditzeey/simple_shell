@@ -30,7 +30,7 @@ int prompt_loop(inf_table *list, char **av)
 		free_inf_table(list, 0);
 	} while (x != -1 && rec_inbuilt != -2);
 
-	write_history(list);
+	mk_history_func(list);
 	free_inf_table(list, 1);
 	if (!interactive_ses(list) && list->status)
 		exit(list->status);
@@ -100,7 +100,7 @@ void find_cmd(inf_table *list)
 	if (!k)
 		return;
 
-	path = find_path(list, get_envalue(list, "PATH="), list->agv[0]);
+	path = func_find_path(list, get_envalue(list, "PATH="), list->agv[0]);
 	if (path)
 	{
 		list->path = path;

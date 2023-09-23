@@ -1,13 +1,13 @@
 #include "shell.h"
 
 /**
- * get_history_file - gets the history file
+ * get_history_func_files - gets the history file
  * @info: parameter struct
  *
  * Return: allocated string containg history file
  */
 
-char *get_history_file(inf_table *info)
+char *get_history_func_files(inf_table *info)
 {
 	char *buf, *dir;
 
@@ -25,15 +25,15 @@ char *get_history_file(inf_table *info)
 }
 
 /**
- * write_history - creates a file, or appends to an existing file
+ * mk_history_func - make a file, or appends to an existing file
  * @info: the parameter struct
  *
  * Return: 1 on success, else -1
  */
-int write_history(inf_table *info)
+int mk_history_func(inf_table *info)
 {
 	ssize_t fd;
-	char *filename = get_history_file(info);
+	char *filename = get_history_func_files(info);
 	sll_table *node = NULL;
 
 	if (!filename)
@@ -54,17 +54,17 @@ int write_history(inf_table *info)
 }
 
 /**
- * read_history - reads history from file
+ * get_history_func - reads history from file
  * @info: the parameter struct
  *
  * Return: hist_ln_count on success, 0 otherwise
  */
-int read_history(inf_table *info)
+int get_history_func(inf_table *info)
 {
 	int i, last = 0, linecount = 0;
 	ssize_t fd, rdlen, fsize = 0;
 	struct stat st;
-	char *buf = NULL, *filename = get_history_file(info);
+	char *buf = NULL, *filename = get_history_func_files(info);
 
 	if (!filename)
 		return (0);
