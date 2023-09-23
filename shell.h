@@ -147,7 +147,7 @@ char *strchkr(char *, char);
 char **word_tok(char *, char *);
 char *memfill(char *, char, unsigned int);
 void free_strs(char **);
-void *_realloc(void *, unsigned int, unsigned int);
+void *mem_realloc(void *, unsigned int, unsigned int);
 void struct_init_(inf_table *);
 void struct_init_md(inf_table *, char **);
 void free_inf_table(inf_table *, int);
