@@ -145,8 +145,8 @@ char *strcpi(char *, char *, int);
 char *strcocate(char *, char *, int);
 char *strchkr(char *, char);
 char **word_tok(char *, char *);
-char *_memset(char *, char, unsigned int);
-void ffree(char **);
+char *memfill(char *, char, unsigned int);
+void free_strs(char **);
 void *_realloc(void *, unsigned int, unsigned int);
 void struct_init_(inf_table *);
 void struct_init_md(inf_table *, char **);
@@ -173,10 +173,10 @@ ssize_t get_node_index(sll_table *, sll_table *);
 char **getenv_info(inf_table *);
 int rem_env_var(inf_table *, char *);
 int set_new_env(inf_table *, char *, char *);
-sll_table *add_node(sll_table **, const char *, int);
-sll_table *add_node_end(sll_table **, const char *, int);
+sll_table *create_node(sll_table **, const char *, int);
+sll_table *create_node_end(sll_table **, const char *, int);
 size_t print_list_str(const sll_table *);
-int delete_node_at_index(sll_table **, unsigned int);
-void free_list(sll_table **);
+int delete_node_speci_index(sll_table **, unsigned int);
+void free_nds_list(sll_table **);
 
 #endif

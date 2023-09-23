@@ -1,14 +1,14 @@
 #include "shell.h"
 
 /**
- * add_node - adds a node to the start of the list
- * @head: address of pointer to head node
- * @str: str field of node
+ * create_node - creates a node in the start of the list
+ * @head: head node
+ * @str: string field of node
  * @num: node index used by history
  *
  * Return: size of list
  */
-sll_table *add_node(sll_table **head, const char *str, int num)
+sll_table *create_node(sll_table **head, const char *str, int num)
 {
 	sll_table *new_head;
 
@@ -17,7 +17,7 @@ sll_table *add_node(sll_table **head, const char *str, int num)
 	new_head = malloc(sizeof(sll_table));
 	if (!new_head)
 		return (NULL);
-	_memset((void *)new_head, 0, sizeof(sll_table));
+	memfill((void *)new_head, 0, sizeof(sll_table));
 	new_head->num = num;
 	if (str)
 	{
@@ -34,14 +34,14 @@ sll_table *add_node(sll_table **head, const char *str, int num)
 }
 
 /**
- * add_node_end - adds a node to the end of the list
+ * create_node_end - adds a node to the end of the list
  * @head: address of pointer to head node
  * @str: str field of node
  * @num: node index used by history
  *
  * Return: size of list
  */
-sll_table *add_node_end(sll_table **head, const char *str, int num)
+sll_table *create_node_end(sll_table **head, const char *str, int num)
 {
 	sll_table *new_node, *node;
 
@@ -52,7 +52,7 @@ sll_table *add_node_end(sll_table **head, const char *str, int num)
 	new_node = malloc(sizeof(sll_table));
 	if (!new_node)
 		return (NULL);
-	_memset((void *)new_node, 0, sizeof(sll_table));
+	memfill((void *)new_node, 0, sizeof(sll_table));
 	new_node->num = num;
 	if (str)
 	{
@@ -95,13 +95,13 @@ size_t print_list_str(const sll_table *h)
 }
 
 /**
- * delete_node_at_index - deletes node at given index
+ * delete_node_speci_index - deletes node at any index
  * @head: address of pointer to first node
  * @index: index of node to delete
  *
  * Return: 1 on success, 0 on failure
  */
-int delete_node_at_index(sll_table **head, unsigned int index)
+int delete_node_speci_index(sll_table **head, unsigned int index)
 {
 	sll_table *node, *prev_node;
 	unsigned int i = 0;
@@ -135,18 +135,18 @@ int delete_node_at_index(sll_table **head, unsigned int index)
 }
 
 /**
- * free_list - frees all nodes of a list
- * @head_ptr: address of pointer to head node
+ * free_nds_list - frees all nodes
+ * @head_ptrr: address of pointer to head node
  *
  * Return: void
  */
-void free_list(sll_table **head_ptr)
+void free_nds_list(sll_table **head_ptrr)
 {
 	sll_table *node, *next_node, *head;
 
-	if (!head_ptr || !*head_ptr)
+	if (!head_ptrr || !*head_ptrr)
 		return;
-	head = *head_ptr;
+	head = *head_ptrr;
 	node = head;
 	while (node)
 	{
@@ -155,5 +155,5 @@ void free_list(sll_table **head_ptr)
 		free(node);
 		node = next_node;
 	}
-	*head_ptr = NULL;
+	*head_ptrr = NULL;
 }

@@ -51,7 +51,7 @@ void struct_init_md(inf_table *list, char **av)
  */
 void free_inf_table(inf_table *list, int all)
 {
-	ffree(list->agv);
+	free_strs(list->agv);
 	list->agv = NULL;
 	list->path = NULL;
 	if (all)
@@ -59,12 +59,12 @@ void free_inf_table(inf_table *list, int all)
 		if (!list->cmd_buf)
 			free(list->arg);
 		if (list->env)
-			free_list(&(list->env));
+			free_nds_list(&(list->env));
 		if (list->history)
-			free_list(&(list->history));
+			free_nds_list(&(list->history));
 		if (list->alias)
-			free_list(&(list->alias));
-		ffree(list->environ);
+			free_nds_list(&(list->alias));
+		free_strs(list->environ);
 			list->environ = NULL;
 		mem_free((void **)list->cmd_buf);
 		if (list->rdfldesc > 2)

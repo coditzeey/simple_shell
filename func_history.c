@@ -97,7 +97,7 @@ int read_history(inf_table *info)
 	free(buf);
 	info->hist_ln_count = linecount;
 	while (info->hist_ln_count-- >= HISTORY_MAX_SIZE)
-		delete_node_at_index(&(info->history), 0);
+		delete_node_speci_index(&(info->history), 0);
 	renumber_history(info);
 	return (info->hist_ln_count);
 }
@@ -116,7 +116,7 @@ int build_history_list(inf_table *info, char *buf, int linecount)
 
 	if (info->history)
 		node = info->history;
-	add_node_end(&node, buf, linecount);
+	create_node_end(&node, buf, linecount);
 
 	if (!info->history)
 		info->history = node;

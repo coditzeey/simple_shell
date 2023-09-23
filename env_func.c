@@ -92,7 +92,7 @@ int add_to_envlist(inf_table *list)
 	size_t i;
 
 	for (i = 0; environ[i]; i++)
-		add_node_end(&node, environ[i], 0);
+		create_node_end(&node, environ[i], 0);
 	list->env = node;
 	return (0);
 }

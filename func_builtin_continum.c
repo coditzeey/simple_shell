@@ -30,7 +30,7 @@ int func_rem_alias(inf_table *list, char *str)
 		return (1);
 	c = *p;
 	*p = 0;
-	ret = delete_node_at_index(&(list->alias),
+	ret = delete_node_speci_index(&(list->alias),
 		get_node_index(list->alias, node_starts_with(list->alias, str, -1)));
 	*p = c;
 	return (ret);
@@ -54,7 +54,7 @@ int func_make_alias(inf_table *list, char *str)
 		return (func_rem_alias(list, str));
 
 	func_rem_alias(list, str);
-	return (add_node_end(&(list->alias), str, 0) == NULL);
+	return (create_node_end(&(list->alias), str, 0) == NULL);
 }
 
 /**

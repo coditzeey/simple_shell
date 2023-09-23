@@ -38,7 +38,7 @@ int rem_env_var(inf_table *list, char *var)
 		p = to_comp(node->st, var);
 		if (p && *p == '=')
 		{
-			list->env_state = delete_node_at_index(&(list->env), i);
+			list->env_state = delete_node_speci_index(&(list->env), i);
 			i = 0;
 			node = list->env;
 			continue;
@@ -86,7 +86,7 @@ int set_new_env(inf_table *list, char *var, char *value)
 		}
 		node = node->next;
 	}
-	add_node_end(&(list->env), buf, 0);
+	create_node_end(&(list->env), buf, 0);
 	free(buf);
 	list->env_state = 1;
 	return (0);
