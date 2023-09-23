@@ -139,7 +139,7 @@ int dec_print(int, int);
 char *num_conv(long int, int, int);
 void coms_rem(char *);
 int is_cmd(inf_table *, char *);
-char *dup_chars(char *, int, int);
+char *charsduplic_ate(char *, int, int);
 char *func_find_path(inf_table *, char *, char *);
 char *strcpi(char *, char *, int);
 char *strcocate(char *, char *, int);

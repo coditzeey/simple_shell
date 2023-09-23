@@ -23,21 +23,21 @@ int is_cmd(inf_table *info, char *path)
 }
 
 /**
- * dup_chars - duplicates characters
- * @pathstr: the PATH string
+ * charsduplic_ate - duplicates characters
+ * @ptstri: the PATH string
  * @start: starting index
  * @stop: stopping index
  *
  * Return: pointer to new buffer
  */
-char *dup_chars(char *pathstr, int start, int stop)
+char *charsduplic_ate(char *ptstri, int start, int stop)
 {
 	static char buf[1024];
 	int i = 0, k = 0;
 
 	for (k = 0, i = start; i < stop; i++)
-		if (pathstr[i] != ':')
-			buf[k++] = pathstr[i];
+		if (ptstri[i] != ':')
+			buf[k++] = ptstri[i];
 	buf[k] = 0;
 	return (buf);
 }
@@ -45,17 +45,17 @@ char *dup_chars(char *pathstr, int start, int stop)
 /**
  * func_find_path - finds this cmd in the PATH string
  * @info: the info struct
- * @pathstr: the PATH string
+ * @ptstri: the PATH string
  * @cmd: the cmd to find
  *
  * Return: full path of cmd if found or NULL
  */
-char *func_find_path(inf_table *info, char *pathstr, char *cmd)
+char *func_find_path(inf_table *info, char *ptstri, char *cmd)
 {
 	int i = 0, curr_pos = 0;
 	char *path;
 
-	if (!pathstr)
+	if (!ptstri)
 		return (NULL);
 	if ((_strlen(cmd) > 2) && to_comp(cmd, "./"))
 	{
@@ -64,9 +64,9 @@ char *func_find_path(inf_table *info, char *pathstr, char *cmd)
 	}
 	while (1)
 	{
-		if (!pathstr[i] || pathstr[i] == ':')
+		if (!ptstri[i] || ptstri[i] == ':')
 		{
-			path = dup_chars(pathstr, curr_pos, i);
+			path = charsduplic_ate(ptstri, curr_pos, i);
 			if (!*path)
 				_strconcat(path, cmd);
 			else
@@ -76,7 +76,7 @@ char *func_find_path(inf_table *info, char *pathstr, char *cmd)
 			}
 			if (is_cmd(info, path))
 				return (path);
-			if (!pathstr[i])
+			if (!ptstri[i])
 				break;
 			curr_pos = i;
 		}
